@@ -1,8 +1,6 @@
 import { Link } from "react-router-dom";
-import Popup from "../components/Popup"
-import { useState } from "react";
+
 function Home() {
-    const [popupVisible,setPopupVisible] = useState(false);
     return (
       <div className="min-h-screen flex flex-col justify-center items-center bg-blue-100 py-10">
         <h1 className="text-4xl font-bold text-gray-800 mb-4">Welcome to Our Website!</h1>
@@ -13,16 +11,6 @@ function Home() {
         >
           Register Now
         </Link>
-
-        <button onClick={()=>{setPopupVisible(true)}}>Testing</button>
-        {popupVisible && (
-        <Popup
-          title="Testing if this works"
-          content="Ahahahhaa"
-          onClose={() => setPopupVisible(false)} // Close popup on "Close"
-        />
-      )}
-        
       </div>
     );
   }
