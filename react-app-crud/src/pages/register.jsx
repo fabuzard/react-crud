@@ -6,6 +6,7 @@ import { useNavigate } from "react-router-dom";
 
 function Register() {
   const [name, setName] = useState("");
+  const [username,setUsername]= useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
@@ -17,6 +18,7 @@ function Register() {
 
     const userData = {
       name: name,
+      username: username,
       email: email,
       password: password,
     };
@@ -28,8 +30,12 @@ function Register() {
       
       console.log(response);
     } catch (err) {
-      setError("Registration failed, please try again");
+      if(err.response){
+        setError(err.response.data.message)
+      }else{
+        setError("Registration failed, please try again");
       console.error(err);
+      }
     }
   };
 
@@ -56,6 +62,18 @@ function Register() {
             />
           </div>
           <div className="mb-4">
+            <label htmlFor="username" className="block text-sm font-semibold text-gray-600">
+              Username
+            </label>
+            <input
+              type="text"
+              id="username"
+              className="w-full p-3 mt-2 border border-gray-300 rounded-md"
+              placeholder="Enter your username"
+              onChange={(e) => setUsername(e.target.value)}
+            />
+          </div>
+          <div className="mb-4">
             <label htmlFor="email" className="block text-sm font-semibold text-gray-600">
               Email
             </label>
@@ -79,6 +97,7 @@ function Register() {
               onChange={(e) => setPassword(e.target.value)}
             />
           </div>
+          
           <button
             type="submit"
             className="w-full bg-blue-600 text-white py-3 rounded-md hover:bg-blue-500 transition duration-300"
@@ -88,9 +107,9 @@ function Register() {
         </form>
         {popupVisible && (
         <Popup
-          title="Testing if this works"
-          content="Ahahahhaa"
-          onClose={handlePopup} // Close popup on "Close"
+          title="Registration successfull"
+          content="Now you can login"
+          onClose={handlePopup}
         />
       )}
         {error && <p>{error}</p>}
