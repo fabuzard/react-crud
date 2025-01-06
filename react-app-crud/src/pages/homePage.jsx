@@ -3,46 +3,58 @@ import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 
 function HomePage({ name }) {
-  const token = localStorage.getItem(`token`);
+  const token = localStorage.getItem("token");
   const [isLoggedIn, setIsLoggedIn] = useState(false);
-  const [error,setError] = useState("");
-  const Navigate = useNavigate();
-
-  const redirect = ()=>{
-    setTimeout(() => {
-      Navigate('/login')
-    }, 2000);
-  }
+  const [error, setError] = useState("");
+  const [loading, setLoading] = useState(true);
+  const navigate = useNavigate();
 
   useEffect(() => {
     const fetchProtectedData = async () => {
-  if (token) {
-    try {
-      const response = await axios.get(
-        "http://localhost:3000/api/validatetoken",
-        {
-          headers: { Authorization: `Bearer ${token}` },
-        }
-      );
-      if (response.status == 200) {
-        setIsLoggedIn(true)
-      }
-    } catch (error) {
-      console.error("Token validation failed",error);
-      setIsLoggedIn(false)
-      setError("Session expired, please log in again.")
+      if (token) {
+        try {
+          const response = await axios.get("http://localhost:3000/api/validatetoken", {
+            headers: { Authorization: `Bearer ${token}` },
+          });
 
-    }
-  } else {
-    setIsLoggedIn(false)
-  }
+          if (response.status === 200) {
+            setIsLoggedIn(true);
+          }
+        } catch (error) {
+          setIsLoggedIn(false);
+          setError("Session expired, please log in again.");
+        }
+      } else {
+        setIsLoggedIn(false);
+        setError("No token provided. Please log in.");
+      }
+
+      setLoading(false);
     };
 
-    fetchProtectedData(); // Add this to call the function
-  }, []); // Closing useEffect hook with the correct empty dependency array
-  if(!isLoggedIn){
-    return (<div className="min-h-screen flex items-center justify-center bg-green-100 text-3xl font-bold text-gray-800 mb-4">{error || 'Please log in to access this page.'}{redirect()}</div>)
+    fetchProtectedData();
+  }, [token]);
+
+  useEffect(() => {
+    if (!loading && !isLoggedIn) {
+      setTimeout(() => {
+        navigate("/login");
+      }, 2000);
+    }
+  }, [isLoggedIn, navigate, loading]);
+
+  if (loading) {
+    return <div>Loading...</div>;
   }
+
+  if (!isLoggedIn) {
+    return (
+      <div className="min-h-screen flex items-center justify-center bg-green-100 text-3xl font-bold text-gray-800 mb-4">
+        {error || "Please log in to access this page."}
+      </div>
+    );
+  }
+
   return (
     <div className="min-h-screen flex items-center justify-center bg-green-100">
       <div className="bg-white p-8 rounded-lg shadow-lg text-center">
