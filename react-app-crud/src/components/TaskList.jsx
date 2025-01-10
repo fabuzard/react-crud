@@ -7,6 +7,17 @@ function TaskList() {
   const [description,setDescription] = useState("");
   const token = localStorage.getItem("token");
 
+  const handleDone=async(taskId)=>{
+
+  }
+
+  const handleDelete=async(taskId)=>{
+    try {
+      const response = await axios.delete("")
+    } catch (error) {
+      
+    }
+  }
   const btnhandler = async (e) => {
     e.preventDefault();
 
@@ -68,6 +79,7 @@ function TaskList() {
             type="text"
             placeholder="Add task"
             className="w-80 h-10 text-center"
+            value={taskName}
             onChange={(e)=>{setTaskName(e.target.value)}}
           />
           <input
@@ -75,18 +87,26 @@ function TaskList() {
             type="text"
             placeholder="Add description"
             className="w-80 h-10 text-center"
+            value={description}
             onChange={(e)=>{setDescription(e.target.value)}}
           />
-          <button onClick={btnhandler}>Add</button>
+          <button onClick={btnhandler} className="bg-green-600 w-20 h-10 mx-auto">Add</button>
         </form>
       </div>
 
       <div className="task-mapping grid grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 2xl:grid-cols-5 gap-4 ">
         {tasks?.map((task) => (
           <div className=" bg-slate-900 text-white  rounded-lg shadow-lg text-center p-20 " key={task._id} style={{ marginBottom: "1rem" }}>
-            <p className="font-bold text-2xl">Task</p>
-            <h3>{task.taskName}</h3>
-            <p> {task.description}</p>
+            <p className="font-bold text-2xl">{task.taskName}</p>
+            <p className=""> {task.description}</p>
+            <section className="delete-section flex flex-col pt-4 space-y-4">
+          <div className="space-x-4 ">
+
+            <button onClick={handleDone(task._id)} className="bg-blue-600 w-12 h-6 mx-auto ">Done</button>
+            <button onClick={handleDone(task._id)} className="bg-yellow-600 w-12 h-6 mx-auto ">Edit</button>
+          </div>
+          <button onClick={handleDelete(task._id)} className="bg-red-600 w-12 h-6 mx-auto ">Delete</button>
+            </section>
           </div>
         ))}
       </div>
