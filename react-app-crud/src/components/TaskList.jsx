@@ -13,8 +13,21 @@ function TaskList() {
 
   const handleDelete=async(taskId)=>{
     try {
-      const response = await axios.delete("")
+      const response = await axios.delete(`http://localhost:3000/api/deletetask/${taskId}`);
+      if(response.status==200){
+        console.log(`Task deleted`)
+        fetchData();
+      }
+
     } catch (error) {
+      if(error.response){
+        console.error(error.response.data.message);
+        setError(error.response.data.message)
+      }else{
+        console.error(`error`,error);
+        setError("An error has occured")
+      }
+
       
     }
   }
@@ -102,10 +115,10 @@ function TaskList() {
             <section className="delete-section flex flex-col pt-4 space-y-4">
           <div className="space-x-4 ">
 
-            <button onClick={handleDone(task._id)} className="bg-blue-600 w-12 h-6 mx-auto ">Done</button>
-            <button onClick={handleDone(task._id)} className="bg-yellow-600 w-12 h-6 mx-auto ">Edit</button>
+            <button  className="bg-blue-600 w-12 h-6 mx-auto ">Done</button>
+            <button  className="bg-yellow-600 w-12 h-6 mx-auto ">Edit</button>
           </div>
-          <button onClick={handleDelete(task._id)} className="bg-red-600 w-12 h-6 mx-auto ">Delete</button>
+          <button onClick={()=>{handleDelete(task._id)}} className="bg-red-600 w-12 h-6 mx-auto ">Delete</button>
             </section>
           </div>
         ))}
