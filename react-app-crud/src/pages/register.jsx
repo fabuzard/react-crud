@@ -5,6 +5,7 @@ import { useNavigate } from "react-router-dom";
 
 
 function Register() {
+  const apiEndpoint = import.meta.env.VITE_API_ENDPOINT;
   const [name, setName] = useState("");
   const [username,setUsername]= useState("");
   const [email, setEmail] = useState("");
@@ -24,7 +25,7 @@ function Register() {
     };
 
     try {
-      const response = await axios.post("http://localhost:3000/api/register", userData);
+      const response = await axios.post(`${apiEndpoint}/api/register`, userData);
       setError("");
       setPopupVisible(true);
       

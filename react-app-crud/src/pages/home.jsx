@@ -1,6 +1,9 @@
 import { Link } from "react-router-dom";
 
 function Home() {
+  const apiEndpoint = import.meta.env.VITE_API_ENDPOINT;
+console.log(apiEndpoint);
+
     return (
       <div className="min-h-screen flex flex-col justify-center items-center bg-blue-100 py-10">
         <h1 className="text-4xl font-bold text-gray-800 mb-4">Welcome to Our Website!</h1>

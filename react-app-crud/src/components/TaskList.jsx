@@ -1,12 +1,14 @@
 import axios from "axios";
 import React, { useEffect, useState } from "react";
 
+
 function TaskList() {
   const [tasks, setTasks] = useState([]);
   const [taskName, setTaskName] = useState("");
   const [description, setDescription] = useState("");
   const [editingTaskId, setEditingTaskId] = useState(null); // Track which task is being edited
   const token = localStorage.getItem("token");
+  const apiEndpoint = import.meta.env.VITE_API_ENDPOINT;
 
   const handleEdit = async (taskId, stasus = null) => {
     const taskData = {
@@ -17,7 +19,7 @@ function TaskList() {
  
     try {
       const response = await axios.patch(
-        `http://localhost:3000/api/updatetask/${taskId}`,
+        `${apiEndpoint}/api/updatetask/${taskId}`,
         taskData
       );
       if (response.status === 200) {
@@ -37,7 +39,7 @@ function TaskList() {
  
     try {
       const response = await axios.patch(
-        `http://localhost:3000/api/updatetask/${taskId}`,
+        `${apiEndpoint}/api/updatetask/${taskId}`,
         taskData
       );
       if (response.status === 200) {
@@ -52,7 +54,7 @@ function TaskList() {
   const handleDelete = async (taskId) => {
     try {
       const response = await axios.delete(
-        `http://localhost:3000/api/deletetask/${taskId}`
+        `${apiEndpoint}/api/deletetask/${taskId}`
       );
       if (response.status === 200) {
         console.log("Task deleted");
@@ -73,7 +75,7 @@ function TaskList() {
 
     try {
       const response = await axios.post(
-        "http://localhost:3000/api/addtask",
+        `${apiEndpoint}/api/addtask`,
         taskData,
         {
           headers: { Authorization: `Bearer ${token}` },
@@ -91,7 +93,7 @@ function TaskList() {
   const fetchData = async () => {
     if (token) {
       try {
-        const response = await axios.get("http://localhost:3000/api/tasks", {
+        const response = await axios.get(`${apiEndpoint}/api/tasks`, {
           headers: { Authorization: `Bearer ${token}` },
         });
         setTasks(response.data);
