@@ -2,7 +2,7 @@ import axios from "axios";
 import { useContext, useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { Context } from "../app";
-import TaskList from "../components/taskList";
+import TaskList from "../components/TaskList.jsx";
 
 function HomePage({ name }) {
   const token = localStorage.getItem("token");
